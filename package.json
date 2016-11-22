@@ -1,0 +1,26 @@
+{
+  "name": "dynagraph",
+  "version": "1.0.0",
+  "description": "Dynamic Query to Charting Module",
+  "main": "index.js",
+  "scripts": {
+    "cosmos": "cosmos",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rwlaschin/DynaGraph.git"
+  },
+  "keywords": [
+    "query",
+    "chart",
+    "widget",
+    "graphing"
+  ],
+  "author": "Robert Wlaschin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rwlaschin/DynaGraph/issues"
+  },
+  "homepage": "https://github.com/rwlaschin/DynaGraph#readme",
+}
