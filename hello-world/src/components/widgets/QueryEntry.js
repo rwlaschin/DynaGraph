@@ -1,15 +1,8 @@
 import React from 'react';
 import PubSub from 'pubsub-js'
 import 'react-dom';
-import { Dropdown, Icon, Input } from 'semantic-ui-react'
-import '../Adapter.js';
-
-// Load dynamically from AdapterComponent
-const _Adapters = [
-  // { text: 'Zenoss', value: 'Zenoss' },
-  // { text: 'MySql', value: 'MySql' }
-]
-
+import { Icon, Input } from 'semantic-ui-react'
+import Adapter from '../Adapter.js';
 
 // sending events
 // PubSub.publish(event,message)
@@ -19,13 +12,13 @@ module.exports = React.createClass({
     var value = this.state.value;
     return (
       <Input
-        label={ <Dropdown defaultValue='Zenoss' options={_Adapters} onChange={this.handleAdapterChange} /> }
+        label={ <Adapter /> }
         labelPosition='left'
         placeholder='Query ...'
         icon={ <Icon name='search' inverted circular link onClick={this.handleClick}/> }
         onChange={ this.handleChange }
         value={ value }
-        style={ { width:"80%","min-width":"400px" } }
+        style={ { width:"80%","minWidth":"400px" } }
       />
     );
   },
@@ -38,7 +31,7 @@ module.exports = React.createClass({
   componentDidMount: function() {
     // var self = this;
     this.subscribers = [
-      PubSub.subscribe('AddAdapter',this.handleSubscribers)
+      PubSub.subscribe('AdapterChanged',this.handleSubscribers)
     ]
   },
   componentDidUnMount: function() {
@@ -52,9 +45,6 @@ module.exports = React.createClass({
   handleSubscribers : function(msg, data) {
     switch(msg) {
       default: break;
-      case 'AddAdapter':
-        _Adapters.push( { text: data.name, value: data.value } );
-        break;
     }
   },
   handleAdapterChange : function(event) {

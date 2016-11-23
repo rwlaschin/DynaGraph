@@ -1,6 +1,6 @@
-import React from 'react';
-import PubSub from 'pubsub-js'
-import 'react-dom';
+// import React from 'react';
+// import PubSub from 'pubsub-js'
+// import 'react-dom';
 // import { Dropdown, Icon, Input } from 'semantic-ui-react'
 
 // sending events
@@ -11,7 +11,7 @@ var fields = [ 'field1', 'field2', 'field3', 'field4' ];
 var functions = [ 'abs', 'ave', 'min', 'max', 'sum' ];
 var conditionals = [ '<','>','<=','>=','!=' ];
 
-module.exports = function() {
+var Zenoss = function() {
   this.eval = function(query,resultcb) {
     // this is going to be in NSQL which is fake
     // I'll need to translate it into my own grammer
@@ -38,9 +38,14 @@ module.exports = function() {
         }
       }
       // Examine the tables and get the correct fields
-    }catch(ew){
+    }catch(e){
 
     }
     return ret;
+  };
+  this.getEntry = function () {
+    return { name: "Zenoss", value: "Zenoss" }
   }
 }
+
+module.exports = new Zenoss();
