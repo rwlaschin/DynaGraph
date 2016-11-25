@@ -1,50 +1,51 @@
-import React from 'react';
 import PubSub from 'pubsub-js'
-import 'react-dom';
-import { Dropdown } from 'semantic-ui-react'
-
-// adapters
 import Zenoss from './adapters/Zenoss.js'
 
-// Load dynamically from AdapterComponent
-var _Adapters = [];
-_Adapters.push( Zenoss.getEntry() );
+module.exports = new function() {
+  var selected = 0;
+  var _Adapters = {}, _Entries = [];
+  // this is going to be yuck later ... how to maintain?
+  _Adapters[ Zenoss.getEntry().value ] = Zenoss;
+  _Entries.push( Zenoss.getEntry() );
 
-// sending events
-// PubSub.publish(event,message)
-
-module.exports = React.createClass({
-  render: function() {
-    return (
-      <Dropdown defaultValue={_Adapters[0].text} options={_Adapters} onChange={this.handleAdapterChange} />
-    );
-  },
-  getInitialState: function() {
-    return {
-      name: 'Adapter',
-      value: '' // start empty, need to pull from teh Dropdown
-    }
-  },
-  componentDidMount: function() {
-    // var self = this;
-    this.subscribers = [
-      PubSub.subscribe('AddAdapter',this.handleSubscribers)
-    ]
-  },
-  componentDidUnMount: function() {
-    try {
-      var i=this.subscribers.length - 1;
-      for(;i>=0;i--) {
-        PubSub.unsubscribe( this.subscribers[i]);
+  function find(name) {
+    var i = _Entries.length-1, item;
+    for(;i>=0;i--) {
+      item = _Entries[i];
+      if( item.value === name ) {
+        return { item:item, indx: i };
       }
-    } catch (e) {}
-  },
-  handleSubscribers : function(msg, data) {
-  },
-  handleadapterChange : function(event) {
-    // get the adapter,
-    // pass the object through
-    PubSub.publish('AdapterChanged', event.currentTarget);
+    }
+    return undefined;
   }
-
-});
+  this.setAdapter = function(value) {
+    var adapter = find(value);
+    if( adapter !== undefined) {
+      selected = adapter.indx;
+      PubSub.publish('UpdatedAdapter',{ value: value });
+      return true;
+    }
+    console.log('Item ' + value + ' was not found');
+  };
+  this.getAdapter = function(value) {
+    if( Number.isInteger( value ) ) {
+      if( Math.abs(value) < _Adapters.length  ) {
+        return _Adapters[_Entries[value].value];
+      }
+    } else if ( typeof value === "string" ) {
+      var adapter = _Adapters[value];
+      if( adapter !== undefined ) {
+        return adapter;
+      }
+    }
+    return this.getCurrent.object(); // return the current one
+  };
+  this.getEntries = function() {
+    return _Entries;
+  };
+  // Accessor
+  this.getCurrent = {
+    entry : function() { return _Entries[selected] },
+    object : function() { return _Adapters[_Entries[selected].value]; }
+  };
+}();

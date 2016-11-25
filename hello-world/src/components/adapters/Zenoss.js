@@ -44,7 +44,7 @@ var Zenoss = function() {
     return ret;
   };
   this.getEntry = function () {
-    return { name: "Zenoss", value: "Zenoss" }
+    return { text: "Zenoss", value: "Zenoss" }
   }
 }
 

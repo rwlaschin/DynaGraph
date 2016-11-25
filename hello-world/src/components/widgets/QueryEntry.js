@@ -2,6 +2,7 @@ import React from 'react';
 import PubSub from 'pubsub-js'
 import 'react-dom';
 import { Icon, Input } from 'semantic-ui-react'
+import { Dropdown } from 'semantic-ui-react'
 import Adapter from '../Adapter.js';
 
 // sending events
@@ -10,9 +11,11 @@ import Adapter from '../Adapter.js';
 module.exports = React.createClass({
   render: function() {
     var value = this.state.value;
+    var current = this.state.current;
+    var adapters = this.state.adapters;
     return (
       <Input
-        label={ <Adapter /> }
+        label={ <Dropdown defaultValue={current.text} options={ adapters } onChange={this.handleAdapterChange} /> }
         labelPosition='left'
         placeholder='Query ...'
         icon={ <Icon name='search' inverted circular link onClick={this.handleClick}/> }
@@ -22,17 +25,17 @@ module.exports = React.createClass({
       />
     );
   },
+  propTypes: { },
+  getDefaultProps : function() { return { }; },
   getInitialState: function() {
     return {
       name: 'QueryEntry',
-      value: '' // start empty, need to pull from teh Dropdown
+      current: Adapter.getCurrent.entry(),
+      adapters: Adapter.getEntries(),
+      value: ""
     }
   },
   componentDidMount: function() {
-    // var self = this;
-    this.subscribers = [
-      PubSub.subscribe('AdapterChanged',this.handleSubscribers)
-    ]
   },
   componentDidUnMount: function() {
     try {
@@ -48,11 +51,11 @@ module.exports = React.createClass({
     }
   },
   handleAdapterChange : function(event) {
-
+    Adapter.setAdapter( event.target.textContent );
+    this.setState( { adapter: Adapter.getCurrent.entry() } );
   },
   handleChange: function(event) {
-    this.setState({value: event.target.value});
-    // I need to call the AdapterCode here to show values
+    this.setState( { value: event.target.value } );
   },
   handleClick: function(event) {
     // I'm a form
