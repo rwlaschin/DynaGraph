@@ -1,8 +1,7 @@
 import React from 'react';
 import PubSub from 'pubsub-js'
 import 'react-dom';
-import { Icon, Input } from 'semantic-ui-react'
-import { Dropdown } from 'semantic-ui-react'
+import { Icon, Input, Label, Dropdown, Form, List } from 'semantic-ui-react'
 import Adapter from '../Adapter.js';
 
 // sending events
@@ -10,19 +9,31 @@ import Adapter from '../Adapter.js';
 
 module.exports = React.createClass({
   render: function() {
-    var value = this.state.value;
+    var self = this;
     var current = this.state.current;
     var adapters = this.state.adapters;
+    var value = this.state.value;
+    var suggestions = Adapter.getSuggestion(value);
     return (
-      <Input
-        label={ <Dropdown defaultValue={current.text} options={ adapters } onChange={this.handleAdapterChange} /> }
-        labelPosition='left'
-        placeholder='Query ...'
-        icon={ <Icon name='search' inverted circular link onClick={this.handleClick}/> }
-        onChange={ this.handleChange }
-        value={ value }
-        style={ { width:"80%","minWidth":"400px" } }
-      />
+      <Form.Field>
+        <Input
+          label={ <Dropdown defaultValue={current.text} options={ adapters } onChange={this.handleAdapterChange} /> }
+          labelPosition='left'
+          placeholder='Query ...'
+          icon={ <Icon name='search' inverted circular link onClick={this.handleClick}/> }
+          onChange={ this.handleChange }
+          value={ value }
+          style={ { width:"80%","minWidth":"400px" } }
+        />
+      { suggestions ? <br/> : '' }
+      <Label pointing className="label { suggestions ? '' : 'empty' }">
+        <List>{
+            suggestions.map(function(value,index){
+              return <List.Item key={index} onClick={self.handleSelectItem}>{value}</List.Item>
+            })
+          }</List>
+      </Label>
+    </Form.Field>
     );
   },
   propTypes: { },
@@ -32,7 +43,7 @@ module.exports = React.createClass({
       name: 'QueryEntry',
       current: Adapter.getCurrent.entry(),
       adapters: Adapter.getEntries(),
-      value: ""
+      value: Adapter.update("")
     }
   },
   componentDidMount: function() {
@@ -55,7 +66,11 @@ module.exports = React.createClass({
     this.setState( { adapter: Adapter.getCurrent.entry() } );
   },
   handleChange: function(event) {
-    this.setState( { value: event.target.value } );
+    this.setState( { value: Adapter.update(event.target.value) } );
+  },
+  handleSelectItem: function(event) {
+    console.info(this.state.value + " " + event.target.textContent);
+    this.setState( {value : (this.state.value + " " + event.target.textContent).replace(/\s+/," ")})
   },
   handleClick: function(event) {
     // I'm a form

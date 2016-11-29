@@ -11,7 +11,7 @@ var fields = [ 'field1', 'field2', 'field3', 'field4' ];
 var functions = [ 'abs(', 'ave(', 'min(', 'max(', 'sum(' ];
 var conditionals = [ '<','>','<=','>=','!=' ];
 
-var Zenoss = function() {
+var TestDB = function() {
   this.eval = function(query,resultcb) {
     // this is going to be in NSQL which is fake
     // I'll need to translate it into my own grammer
@@ -41,11 +41,11 @@ var Zenoss = function() {
     }catch(e){
 
     }
-    return ret.split(',');
+    return ret;
   };
   this.getEntry = function () {
-    return { text: "Zenoss", value: "Zenoss" }
+    return { text: "TestDB", value: "SqlLite" }
   }
 }
 
-module.exports = new Zenoss();
+module.exports = new TestDB();
