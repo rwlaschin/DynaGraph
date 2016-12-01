@@ -27,21 +27,18 @@ var Zenoss = function() {
         if( key in usedKeys ) { continue; }
         switch( key ) {
           default: break;
-          case 'tables': ret += tables; break;
+          case 'tables': ret = ret.concat(tables); break;
           // this changes based on which tables were selected
-          case 'fields': ret += fields; break;
-          case 'functions': ret += functions; break;
-          case 'separator': ret += ','; break;
-          case 'conditionals': ret +=  conditionals ; break;
-          case 'openarguments': ret +=  '(' ; break;
-          case 'closearguments': ret +=  ')' ; break;
+          case 'fields': ret = ret.concat(fields); break;
+          case 'functions': ret = ret.concat(functions); break;
+          case 'conditionals': ret = ret.concat(conditionals); break;
         }
       }
       // Examine the tables and get the correct fields
     }catch(e){
 
     }
-    return ret.split(',');
+    return ret;
   };
   this.getEntry = function () {
     return { text: "Zenoss", value: "Zenoss" }

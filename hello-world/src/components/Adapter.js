@@ -1,11 +1,28 @@
 import PubSub from 'pubsub-js'
 import Zenoss from './adapters/Zenoss.js'
 
+var _transitions = {
+  "FROM": [',','SELECT'],
+  "SELECT": [ 'WHERE', 'FACET', 'TIMESERIES', 'COMPARE', 'LIMIT',',' ],
+  "WHERE": [ 'LIKE', "=", "<", ">", "<=", ">=", "!=" ],
+  "AND": [ 'LIKE', "=", "<", ">", "<=", ">=", "!=" ],
+  "OR": [ 'LIKE', "=", "<", ">", "<=", ">=", "!=" ],
+  "=" : [ 'AND', 'OR', 'FACET', 'TIMESERIES', 'COMPARE', 'LIMIT' ],
+  "<" : [ 'AND', 'OR', 'FACET', 'TIMESERIES', 'COMPARE', 'LIMIT' ],
+  ">" : [ 'AND', 'OR', 'FACET', 'TIMESERIES', 'COMPARE', 'LIMIT' ],
+  "<=" : [ 'AND', 'OR', 'FACET', 'TIMESERIES', 'COMPARE', 'LIMIT' ],
+  ">=" : [ 'AND', 'OR', 'FACET', 'TIMESERIES', 'COMPARE', 'LIMIT' ],
+  "!=" : [ 'AND', 'OR', 'FACET', 'TIMESERIES', 'COMPARE', 'LIMIT' ],
+  "LIKE" : [ 'AND', 'OR', 'FACET', 'TIMESERIES', 'COMPARE', 'LIMIT' ],
+  "TIMESERIES": [ 'COMPARE', 'LIMIT' ],
+  "COMPARE": [ 'TIMESERIES', 'LIMIT' ]
+}
+
 module.exports = new function() {
   var selected = 0;
   var _Adapters = {}, _Entries = [];
   var tokens = new RegExp(
-    /(^FROM|SELECT|WHERE|LIKE|[><=!]|FACET|TIMESERIES|COMPARE|LIMIT|'[^']*'|[^,\s]+)/,
+    /(^FROM|SELECT|WHERE|LIKE|AND|OR|[><=!]|FACET|TIMESERIES|COMPARE|LIMIT|'[^']*'|[^,\s]+|[)])/,
     "ig");
   // this is going to be yuck later ... how to maintain?
   _Adapters[ Zenoss.getEntry().value ] = Zenoss;
@@ -59,8 +76,8 @@ module.exports = new function() {
     return input;
   }
   this.getSuggestion = function(input) {
-    if( !input || input === "" ) {
-      return "";
+    if( typeof input !== "string" ) {
+      input = "";
     }
 
     // ------ syntax ------
@@ -80,36 +97,45 @@ module.exports = new function() {
       var adapter = this.getCurrent.object();
       var match ="";
       while( --position >= 0 ) {
-        match = matches[ position ];
+        match = matches[ position ].toUpperCase();
         switch( match ) {
-          case "FROM":
-            value = adapter.get(["tables"]);
-            // If values are in the match string, then I need to add ',' and or 'SELECT'
-            if( len > 1 ) {
-/** REFACTOR into function **/
-              var i=value.length, val="", haystack = new RegExp(items,"i");
-              while(--i >= 0) {
-                val = value[i];
-                if( haystack.test( val ) ) {
-                  value.push(",");
-                  value.push("SELECT");
-                  break;
-                }
-              }
-/** REFACTOR into function **/
-            }
-            break;
-          case "SELECT": value = adapter.get(["functions","fields"]); break;
-          case "WHERE": value = adapter.get(["fields"]); break;
-          case ">": case "<": case ">=": case "<=": case "!=": case "=": case "LIKE":
-            value = adapter.get(["fields"]); break;
-          case "TIMESERIES": value = "AUTO" ; break;
-          case "FACET": value = adapter.get(["fields"]); break;
+          case "FROM": value = value.concat(adapter.get(["tables"])); break;
+          case "SELECT": value = value.concat(adapter.get(["fields","functions"])); break;
+          case "WHERE": value = value.concat(adapter.get(["fields"])); break;
+          case ">": case "<": case ">=": case "<=": case "!=": case "=":
+            value = value.concat(adapter.get(["fields","functions"])); break;
+          case "LIKE":
+            value = value.concat(adapter.get(["fields"])); break;
+          case "TIMESERIES": value = value.concat(["AUTO"]); break;
+          case "FACET": value = value.concat(adapter.get(["fields"])); break;
           case "COMPARE": value = adapter.get(["daypart"]); break;
           default:
-            items += "\\b"+match+"\\b" + ( items !== "" ? "|" : "" );
+            items += ( items !== "" ? "|" : "" ) + escapeForRegExp(matches[ position ]);
             continue;
         }
+        break;
+      }
+      if( position < len && items !== "" ) {
+        try {
+          if( match !== 'LIKE' ) {
+          value = appendTransitions(value,items,_transitions[match]);
+          } else {
+            value = value.concat( _transitions[match] );
+          }
+        } catch(e) {}
+      }
+    }
+    return value;
+  }
+  function escapeForRegExp(value) {
+    return value.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+  }
+  function appendTransitions(value,items,transitions) {
+    var i=value.length, val="", haystack = new RegExp(items,"i");
+    while(--i >= 0) {
+      val = value[i];
+      if( haystack.test( val ) ) {
+        value = value.concat( transitions );
         break;
       }
     }
