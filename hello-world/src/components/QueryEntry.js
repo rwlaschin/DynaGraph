@@ -2,7 +2,7 @@ import React from 'react';
 import PubSub from 'pubsub-js'
 import 'react-dom';
 import { Icon, Input, Label, Dropdown, Form, List } from 'semantic-ui-react'
-import Adapter from '../Adapter.js';
+import Adapter from './Adapter.js';
 
 // sending events
 // PubSub.publish(event,message)
@@ -14,6 +14,7 @@ module.exports = React.createClass({
     var adapters = this.state.adapters;
     var value = this.state.value;
     var suggestions = Adapter.getSuggestion(value);
+    // search, if I have a valid response draw a tabbed panel with different formats.
     return (
       <Form.Field>
         <Input
@@ -40,13 +41,14 @@ module.exports = React.createClass({
   getDefaultProps : function() { return { }; },
   getInitialState: function() {
     return {
-      name: 'QueryEntry',
+      name:__filename,
       current: Adapter.getCurrent.entry(),
       adapters: Adapter.getEntries(),
       value: Adapter.update("")
     }
   },
   componentDidMount: function() {
+    this.subscribers = [];
   },
   componentDidUnMount: function() {
     try {
