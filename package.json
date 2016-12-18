@@ -1,21 +1,29 @@
 {
   "name": "dynagraph",
-  "version": "1.0.0",
-  "description": "Dynamic Query to Charting Module",
-  "main": "index.js",
+  "version": "0.0.1",
+  "description": "A dashboard utility that uses a Sql like syntax for querying, data and then allowing a myriad of visulaizations which can be added to a dashboard",
+  "main": "app.js",
   "scripts": {
     "cosmos": "cosmos",
+    "prestart" : "echo webpack everything",
+    "start":"node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rwlaschin/DynaGraph.git"
+    "url": "https://github.com/rwlaschin/DynaGraph.git"
   },
   "keywords": [
     "query",
     "chart",
+    "dashboard",
+    "sql",
     "widget",
+    "reporting",
+    "statistics",
     "graphing"
+    "analysis",
+    "nodejs"
   ],
   "author": "Robert Wlaschin",
   "license": "ISC",
@@ -23,4 +31,15 @@
     "url": "https://github.com/rwlaschin/DynaGraph/issues"
   },
   "homepage": "https://github.com/rwlaschin/DynaGraph#readme",
+  "dependencies": {
+    "colour": "^0.7.1",
+    "express": "^4.14.0",
+    "passport": "^0.3.2",
+    "rollbar": "^0.6.3"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "proxyquire": "^1.7.10",
+    "sinon": "^1.17.6"
+  }
 }
