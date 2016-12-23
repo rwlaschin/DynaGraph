@@ -1,6 +1,6 @@
 import React from 'react';
 import QueryEntry from './QueryEntry';
-import ChartChooser from './TabbedChartChooser';
+import TabbedChartChooser from './TabbedChartChooser';
 import Dashboard from './Dashboard';
 
 module.exports = React.createClass({

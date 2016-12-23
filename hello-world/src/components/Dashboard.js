@@ -3,7 +3,7 @@ import PubSub from 'pubsub-js'
 import 'react-dom';
 // import { Icon, Input, Label, Dropdown, Form, List } from 'semantic-ui-react'
 
-import BarChart from "./widgets/BarChart";
+/*import BarChart from "./widgets/BarChart";
 import BubbleChart from "./widgets/BubbleChart";
 import Chart from "./widgets/Chart";
 import Donut from "./widgets/Donut";
@@ -15,7 +15,7 @@ import Metric from "./widgets/Metric";
 import Pie from "./widgets/Pie";
 import Polar from "./widgets/Polar";
 import Scales from "./widgets/Scales";
-import Table from "./widgets/Table";
+import Table from "./widgets/Table";*/
 
 module.exports = React.createClass({
   render: function() {

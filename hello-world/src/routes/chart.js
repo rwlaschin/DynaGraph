@@ -8,8 +8,7 @@ var router = express.Router();
 
 module.exports = function() {
   console.log( "%s Loading route".debug, __filename );
-  app.route('/:chart')
-    .post( function(req,res) {
+  router.post('/:chart',function(req,res) {
       res.send("Boom!  Here it is!");
     });
 
