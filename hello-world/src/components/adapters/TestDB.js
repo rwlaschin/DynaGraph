@@ -11,14 +11,14 @@ var fields = [ 'field1', 'field2', 'field3', 'field4' ];
 var functions = [ 'abs(', 'ave(', 'min(', 'max(', 'sum(' ];
 var conditionals = [ '<','>','<=','>=','!=' ];
 
-var TestDB = function() {
-  this.eval = function(query,resultcb) {
+module.exports = function() {
+  module.exports.eval = function(query,resultcb) {
     // this is going to be in NSQL which is fake
     // I'll need to translate it into my own grammer
     // and return the result
     resultcb( query, [] );
   };
-  this.get = function(keys) {
+  module.exports.get = function(keys) {
     var ret = [];
     try {
       var len = keys.length, usedKeys = {};
@@ -43,9 +43,7 @@ var TestDB = function() {
     }
     return ret;
   };
-  this.getEntry = function () {
+  module.exports.getEntry = function () {
     return { text: "TestDB", value: "SqlLite" }
   }
 }
-
-module.exports = new TestDB();
