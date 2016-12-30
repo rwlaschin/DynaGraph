@@ -8,10 +8,16 @@
     /users/:userId/books/:bookId -> req.params: { "userId": "34", "bookId": "8989" }
 */
 
-var utils = require.main.require('./src/utilities');
-var color = utils.color;
-var path = require("path");
-var fs = require("fs");
+const util = require.main.require('util');
+const utils = require.main.require('./src/utilities');
+const color = utils.color;
+const path = require("path");
+const fs = require("fs");
+const __relativeFilename = __filename.replace( new RegExp( util.format( ".*%s", __dirname ),"" ) );
+
+console.log( __dirname, path.dirname(require.main.filename) );
+console.log( "Filename", __filename );
+console.log( "Relative <%s>", __relativeFilename);
 
 var _routes = {}, _initialized = false;
 
@@ -26,7 +32,7 @@ function init () {
     file = fileList[index];
     requirePath = "./src/routes/" + path.basename(file,'.js'); // do I need to hard-code this path?
     filePath = requirePath + '.js'; // do I need to hard-code this path?
-    console.log( "%s: Found <%s>, adding to loading list".debug, __filename,filePath );
+    console.log( "%s: Found <%s>, adding to loading list".warn, __filename,filePath );
     // note: if there are dupes in filenames this could overwrite
     _routes[file] = { require: requirePath, path : filePath, name: file, module: undefined };
   }
@@ -38,11 +44,14 @@ function loadRoutes (app) {
     key = kRoutes[index];
     module = _routes[key].module;
     if( !module ) {
-      console.log("%s: Loading route %s from <%s>".debug, __filename, key, _routes[key].require );
+      console.log("%s: Loading route %s from <%s>".info, __filename, key, _routes[key].require );
       module =
         _routes[key].module = require.main.require( _routes[key].require );
-      console.warn( "Adding new route %s", module.route );
-      console.warn( "Router Object %s", module.router );
+      if( typeof module.router !== 'function' ) {
+        console.error( "Unexpected routing object of type %s", typeof module.router );
+        continue;
+      }
+      console.warn( "Adding new route %s".debug, module.route );
       if( module && module.route && module.router ) {
         app.use( _routes[key].module.route, _routes[key].module.router );
       }

@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "cosmos": "cosmos",
-    "prestart" : "echo webpack everything",
-    "start":"node app.js",
+    "prestart": "webpack -d --config webpack.react-components.config.js --sort-modules-by --display-modules --config-file dev",
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,7 +21,7 @@
     "widget",
     "reporting",
     "statistics",
-    "graphing"
+    "graphing",
     "analysis",
     "nodejs"
   ],
@@ -32,14 +32,48 @@
   },
   "homepage": "https://github.com/rwlaschin/DynaGraph#readme",
   "dependencies": {
+    "babel-core": "^6.8.0",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-es2016": "^6.16.0",
+    "babel-preset-es2017": "^6.16.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-register": "^6.7.2",
+    "babelify": "^7.3.0",
+    "body-parser": "^1.15.0",
     "colour": "^0.7.1",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.1",
     "express": "^4.14.0",
+    "glob": "^7.0.3",
+    "ip": "^1.1.3",
+    "jsonwebtoken": "^7.1.9",
+    "multifetch": "^1.1.1",
+    "nunjucks": "^3.0.0",
     "passport": "^0.3.2",
-    "rollbar": "^0.6.3"
+    "pubsub-js": "^1.5.4",
+    "pug": "^2.0.0-beta6",
+    "react": "^15.3.1",
+    "react-bootstrap": "^0.30.3",
+    "react-dom": "^15.3.1",
+    "rollbar": "^0.6.3",
+    "semantic-ui-react": "^0.61.2",
+    "superagent": "^1.8.3",
+    "superagent-defaults": "^0.1.14"
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "css-loader": "^0.26.1",
+    "expose-loader": "^0.7.1",
+    "json-loader": "^0.5.4",
+    "mocha": "^2.4.5",
+    "mocha-junit-reporter": "^1.11.1",
     "proxyquire": "^1.7.10",
-    "sinon": "^1.17.6"
+    "react-hot-loader": "^1.3.0",
+    "sinon": "^1.17.6",
+    "string-replace-loader": "^1.0.2",
+    "supertest": "^1.2.0",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1"
   }
 }

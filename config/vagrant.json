@@ -1,0 +1,19 @@
+{
+    "DB":{
+        "host":"localhost",
+        "port":3306,
+        "username":"root",
+        "password":"",
+        "database":"rockyouadmgr"
+    },
+    "Network":{
+        "port":3000
+    },
+    "Client":{
+        "Network":{
+            "protocol":"",
+            "domain":"localhost",
+            "port":"3000"
+        }
+    }
+}

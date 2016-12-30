@@ -1,0 +1,19 @@
+{
+    "DB":{
+        "host":"ryadsmain.rockyou-internal.com",
+        "port":3306,
+        "username":"r0ck",
+        "password":"Raps77jIn18sER",
+        "database":"rockyouadmgr"
+    },
+    "Network":{
+        "port":80
+    },
+    "Client":{
+        "Network":{
+            "protocol":"",
+            "domain":"amsbackend.rockyou.com",
+            "port":""
+        }
+    }
+}

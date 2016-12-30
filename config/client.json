@@ -1,0 +1,12 @@
+{
+    "Sequences":[{
+        "id":1,
+        "immutable":true   
+    }],
+    "Placements":[],
+    "AdGroups":[],
+    "Batching":{
+        "endpoint":"/api/batch",
+        "count":5
+    }
+}

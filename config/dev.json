@@ -1,0 +1,22 @@
+{
+    "DB":{
+        "host":"",
+        "port":3306,
+        "username":"",
+        "password":"",
+        "database":"rockyouadmgr"
+    },
+    "Network":{
+        "port":3000
+    },
+    "Authentication":{
+        "disable":true
+    },
+    "Client":{
+        "Network":{
+            "protocol":"",
+            "domain":"localhost",
+            "port":"3000"
+        }
+    }   
+}

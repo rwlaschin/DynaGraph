@@ -1,0 +1,15 @@
+{
+    "DB":{
+        "host":"localhost",
+        "port":3306,
+        "username":"root",
+        "password":"",
+        "database":"rockyouadmgr_test"
+    },
+    "Authentication":{
+        "disable":true
+    },
+    "Network":{
+        "port":3000
+    }
+}
