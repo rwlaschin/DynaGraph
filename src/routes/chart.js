@@ -11,7 +11,8 @@ module.exports = {};
 console.log( "%s: Loading route".debug, __filename );
 
 router.post('/:chart', function(req,res) {
-    res.send("Boom!  Here it is!");
+    res.status(200)
+       .send("Boom!  Here it is!");
 });
 
 /////////////////////////////////////////////////

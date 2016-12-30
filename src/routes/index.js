@@ -67,7 +67,8 @@ module.exports = function(app) {
 
     console.log("%s: Creating Error route".debug,__filename);
     app.get('*', function (req, res) {
-      res.send('File not found', 404);
+      res.status(404)
+         .send('File not found');
     });
     _initialized = true;
   }

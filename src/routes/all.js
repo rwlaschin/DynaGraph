@@ -11,7 +11,8 @@ module.exports = {};
 console.log( "%s: Loading route".debug, __filename );
 
 router.all('/', function (req, res) {
-    res.send('Hello World!').end();
+    res.status(200)
+       .send('Hello World!');
 });
 
 /////////////////////////////////////////////////

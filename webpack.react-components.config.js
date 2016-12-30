@@ -1,10 +1,10 @@
 process.env.NODE_ENV = "production";
 
-const webpack = require('webpack');
-const path = require('path');
-const localutils = require('./tools/localutils');
+const webpack = require("webpack");
+const path = require("path");
+const localutils = require("./tools/localutils");
 
-const config = require('./config/config.js');
+const config = require("./config/config.js");
 const nw = config.Client.Network;
 
 var PATHS = {
@@ -16,30 +16,30 @@ module.exports = {
   entry: PATHS.components,
   output: {
     path: PATHS.build,
-    filename: 'bundle.js'
+    filename: "bundle.js"
   },
   module: {
     loaders: [{
       test: /\.js/,
-      loader: 'string-replace',
+      loader: "string-replace",
       exclude: /node_modules/,
       include: __dirname,
       query: {
-          search:'{domain}',
+          search:"{domain}",
           replace:nw.protocol + "//" + nw.domain + (nw.port ? ":"+nw.port : ""),
-          flags: 'g'
+          flags: "g"
       }
     }, {
       test: /\.js/,
-      loader: 'babel',
+      loaders: [ "babel" ],
       exclude: /node_modules/,
       include: __dirname
     }, {
       test: /\.json$/,
-      loader: "json"
+      loaders: [ "json" ]
     }, {
       test: /\.css$/,
-      loader: "css-loader"
+      loaders: [ "css-loader" ]
     }]
   }
 };
