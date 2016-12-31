@@ -6,7 +6,7 @@
   "scripts": {
     "cosmos": "cosmos",
     "prestart": "webpack -d --config webpack.react-components.config.js --sort-modules-by --display-modules --display-error-details --config-file dev",
-    "start": "node app.js",
+    "start": "node app.js --env USER:robert.wlaschin",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

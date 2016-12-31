@@ -10,7 +10,7 @@ module.exports = {};
 
 console.log( "%s: Loading route".debug, __filename );
 
-router.all('/', function (req, res) {
+router.all('/', function (req, res, next) {
     res.status(200)
        .send('Hello World!');
 });

@@ -65,11 +65,11 @@ module.exports = function(app) {
   if( !_initialized ) {
     loadRoutes(app);
 
-    console.log("%s: Creating Error route".debug,__filename);
-    app.get('*', function (req, res) {
+    /*console.log("%s: Creating Error route".debug,__filename);
+    app.get('*', function (req, res, next) {
       res.status(404)
          .send('File not found');
-    });
+    });*/
     _initialized = true;
   }
 

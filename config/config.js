@@ -4,7 +4,7 @@ function setupConfig() {
     var cmdLineOptions = {
         "configfile":"bamboo" //Default Config File is bamboo.json
     };
-    
+
     //Define Option Handlers
     this.optionHandlers = {
         "configfile":function() {
@@ -40,5 +40,5 @@ function setupConfig() {
     }
 }
 
-// TODO: Implment functionality to load configs based on enviroment.
+// TODO: Implement functionality to load configs based on enviroment.
 module.exports = new setupConfig();
