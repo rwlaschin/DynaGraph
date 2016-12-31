@@ -29,7 +29,8 @@ app.use(express.static(__dirname + '/public'));
 
 require( __dirname + "/src/routes")(app);
 
+app.use(utils.rollbarErrorHandler());
+
 app.listen(config.Network.port);
 
 module.exports = app;
-

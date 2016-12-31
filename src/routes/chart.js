@@ -15,6 +15,11 @@ router.post('/:chart', function(req,res) {
        .send("Boom!  Here it is!");
 });
 
+router.get('/:chart', function(req,res) {
+    res.status(500)
+       .send("Route not available");
+});
+
 /////////////////////////////////////////////////
 // exports
 
